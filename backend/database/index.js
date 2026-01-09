@@ -1,5 +1,9 @@
 const { Sequelize } = require('sequelize');
-require('dotenv').config();
+
+// Only load dotenv locally
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -7,7 +11,7 @@ const sequelize = new Sequelize(
   process.env.DB_PASSWORD,
   {
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 3306,
+    port: Number(process.env.DB_PORT), // REQUIRED
     dialect: 'mysql',
     logging: false,
     dialectOptions: {
@@ -16,21 +20,22 @@ const sequelize = new Sequelize(
   }
 );
 
-
 (async () => {
   try {
+    console.log('🔎 DB CONFIG CHECK:', {
+      host: process.env.DB_HOST,
+      port: process.env.DB_PORT,
+      user: process.env.DB_USER,
+      db: process.env.DB_NAME
+    });
+
     await sequelize.authenticate();
     console.log('✅ Database connected successfully');
   } catch (error) {
-    console.error('❌ Unable to connect to database:', error.message);
-    process.exit(1); // Stop app if DB fails
+    console.error('❌ Unable to connect to database');
+    console.error(error);
+    process.exit(1);
   }
 })();
 
-const db = {};
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
-
-db.Job = require('./jobModel')(sequelize, Sequelize);
-
-module.exports = db;
+module.exports = sequelize;
