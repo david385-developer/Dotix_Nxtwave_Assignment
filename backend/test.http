@@ -1,0 +1,22 @@
+###
+GET http://localhost:3000/jobs
+
+###
+POST http://localhost:3000/jobs
+Content-Type: application/json
+
+{
+  "taskName": "Generate Report",
+  "payload": {
+    "format": "pdf",
+    "reportId": 1023,
+    "requestedBy": "admin@company.com"
+  },
+  "priority": "Medium"
+}
+
+###
+GET http://localhost:3000/jobs/1
+
+###
+POST http://localhost:3000/run-job/3
