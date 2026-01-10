@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://dotix-nxtwave-assignment-1.onrender.com'
 
 export async function fetchJobs(filters = {}) {
   const params = new URLSearchParams(filters).toString();
