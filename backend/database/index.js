@@ -1,5 +1,6 @@
 const { Sequelize } = require('sequelize');
 
+// Load dotenv only in local development
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
@@ -23,9 +24,10 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+// Import models
 db.Job = require('./jobModel')(sequelize, Sequelize);
 
-// Test connection
+// Test DB connection early
 (async () => {
   try {
     await sequelize.authenticate();
